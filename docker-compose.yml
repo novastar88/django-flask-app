@@ -1,0 +1,48 @@
+version: '3.9'
+
+services:
+  web:
+    env_file:
+      - ./.env
+    build: ./web
+    ports:
+      - "8015:8015"
+    command: gunicorn BaseWMS.wsgi:application --bind 0.0.0.0:8015
+    restart: always
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      redis-cache:
+        condition: service_healthy
+  mysql-db:
+    # https://hub.docker.com/_/mysql
+    image: mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '${MYSQL_ROOT_PASSWORD}' ]
+      start_period: 1m
+      start_interval: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    env_file:
+      - ./.env
+    restart: always
+  redis-cache:
+    # https://hub.docker.com/r/redis/redis-stack-server
+    image: redis/redis-stack-server
+    ports:
+      - "6380:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-p", "6379", "ping" ]
+      start_period: 1m
+      start_interval: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    env_file:
+      - ./.env
+    restart: always
+
+volumes:
