@@ -55,6 +55,11 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 RUN pip install gunicorn
 
+# copy entrypoint.sh
+COPY ./entrypoint.sh .
+RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.sh
+RUN chmod +x /usr/src/app/entrypoint.sh
+
 # copy project
 COPY . $APP_HOME
 
@@ -64,3 +69,5 @@ RUN chown -R app:app $APP_HOME
 ## change to the app user
 USER app
 
+# run entrypoint.sh
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

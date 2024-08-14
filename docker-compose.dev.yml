@@ -1,18 +1,6 @@
 version: '3.9'
 
 services:
-  web:
-    env_file:
-      - ./.env
-    build: ./web
-    ports:
-      - "8015:8015"
-    restart: always
-    depends_on:
-      mysql-db:
-        condition: service_healthy
-      redis-cache:
-        condition: service_healthy
   mysql-db:
     # https://hub.docker.com/_/mysql
     image: mysql
