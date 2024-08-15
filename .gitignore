@@ -3,3 +3,5 @@ __pycache__
 .env*
 *.log
 backup
+migrations
+.vscode

@@ -13,6 +13,10 @@ services:
         condition: service_healthy
       redis-cache:
         condition: service_healthy
+    volumes:
+          - django-logs:/usr/src/app/logs
+          - django-backups:/usr/src/app/backups
+
   mysql-db:
     # https://hub.docker.com/_/mysql
     image: mysql
@@ -30,6 +34,7 @@ services:
     restart: always
     volumes:
           - db-data:/var/lib/mysql
+          
   redis-cache:
     # https://hub.docker.com/r/redis/redis-stack-server
     image: redis/redis-stack-server
@@ -48,3 +53,5 @@ services:
 
 volumes:
   db-data:
+  django-logs:
+  django-backups:
