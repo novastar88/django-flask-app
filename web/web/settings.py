@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-import os
+# import os
 import environ
 
 env = environ.Env()
@@ -155,3 +155,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f"redis://{env('REDIS_CACHE_HOST')}:{env('REDIS_CACHE_PORT')}",
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
