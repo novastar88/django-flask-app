@@ -7,6 +7,13 @@ services:
     build: ./web
     ports:
       - "8015:8015"
+    healthcheck:
+      test: ["CMD", 'healthcheck.sh' ]
+      start_period: 1m
+      start_interval: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
     restart: always
     depends_on:
       mysql-db:
