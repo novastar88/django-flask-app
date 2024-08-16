@@ -1,17 +1,16 @@
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 import redis
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        r = redis.Redis(host='localhost', port=6390, db=0)
+        r = redis.Redis(host=settings.REDIS_CACHE_HOST,
+                        port=int(settings.REDIS_CACHE_PORT), db=0)
 
         try:
             r.ping()
-            print("Successfully connected to redis")
+            self.stdout.write(self.style.SUCCESS(
+                "Successfully connected to redis"))
         except (redis.exceptions.ConnectionError, ConnectionRefusedError):
-            print("Redis connection error!")
-            return False
-
-        return True
+            raise CommandError("Redis connection error!")
