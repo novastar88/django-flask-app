@@ -1,22 +1,22 @@
 version: '3.9'
 
 services:
-  web:
+  django-web:
     env_file:
       - ./.env
     build: ./web
     ports:
-      - "8015:8015"
+      - "8001:8000"
     healthcheck:
       test: ["CMD", 'healthcheck.sh' ]
       start_period: 1m
       start_interval: 10s
-      interval: 10s
+      interval: 30s
       timeout: 5s
       retries: 3
     restart: always
     depends_on:
-      mysql-db:
+      postgres-db:
         condition: service_healthy
       redis-cache:
         condition: service_healthy
@@ -31,10 +31,10 @@ services:
     ports:
       - "8016:8016"
     healthcheck:
-      test: ["CMD", 'healthcheck.sh' ]
+      test: ["CMD","python", "healthcheck.py", "|| exit 1" ]
       start_period: 1m
       start_interval: 10s
-      interval: 10s
+      interval: 30s
       timeout: 5s
       retries: 3
     restart: always
@@ -42,23 +42,23 @@ services:
       redis-cache:
         condition: service_healthy
 
-  mysql-db:
-    # https://hub.docker.com/_/mysql
-    image: mysql
+  postgres-db:
+    # https://hub.docker.com/_/postgres
+    image: postgres:16
     ports:
-      - "3306:3306"
+      - "5433:5432"
     healthcheck:
-      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '${MYSQL_ROOT_PASSWORD}' ]
+      test: ["CMD-SHELL", "pg_isready", "-d", "${POSTGRES_DB}"]
       start_period: 1m
       start_interval: 10s
-      interval: 10s
+      interval: 30s
       timeout: 5s
       retries: 3
     env_file:
       - ./.env
     restart: always
     volumes:
-          - db-data:/var/lib/mysql
+          - db-data:/var/lib/postgresql/data
           
   redis-cache:
     # https://hub.docker.com/r/redis/redis-stack-server
@@ -69,7 +69,7 @@ services:
       test: [ "CMD", "redis-cli", "-p", "6379", "ping" ]
       start_period: 1m
       start_interval: 10s
-      interval: 10s
+      interval: 15s
       timeout: 5s
       retries: 3
     env_file:

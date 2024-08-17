@@ -1,13 +1,13 @@
 version: '3.9'
 
 services:
-  mysql-db:
-    # https://hub.docker.com/_/mysql
-    image: mysql
+  postgres-db:
+    # https://hub.docker.com/_/postgres
+    image: postgres:16
     ports:
-      - "3306:3306"
+      - "5433:5432"
     healthcheck:
-      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '${MYSQL_ROOT_PASSWORD}' ]
+      test: ["CMD-SHELL", "pg_isready", "-d", "${POSTGRES_DB}"]
       start_period: 1m
       start_interval: 10s
       interval: 10s
@@ -17,7 +17,8 @@ services:
       - ./.env
     restart: always
     volumes:
-          - db-data:/var/lib/mysql
+          - db-data:/var/lib/postgresql/data
+          
   redis-cache:
     # https://hub.docker.com/r/redis/redis-stack-server
     image: redis/redis-stack-server

@@ -27,14 +27,7 @@ environ.Env.read_env(os.path.join(BASE_DIR.parent, ".env"))
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-match (env('DJANGO_DEBUG')):
-    case 'true':
-        DEBUG = True
-    case 'false':
-        DEBUG = False
-    case _:
-        DEBUG = False
-        print("env DEBUG_MODE should be true/false, setting to False")
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -107,13 +100,13 @@ CORS_ALLOW_CREDENTIALS = True
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        'NAME': env('MYSQL_DJANGO_DB_NAME'),
-        'USER': "root",
-        'PASSWORD': env('MYSQL_ROOT_PASSWORD'),
-        'HOST': env('MYSQL_HOST'),
-        'PORT': env('MYSQL_PORT'),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('POSTGRES_DB'),
+        'USER': "postgres",
+        'PASSWORD': env('POSTGRES_PASSWORD'),
+        'HOST': env('POSTGRES_HOST'),
+        'PORT': env('POSTGRES_PORT'),
     }
 }
 

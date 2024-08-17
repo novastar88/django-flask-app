@@ -11,11 +11,6 @@ def urls_factory(viewsets_cls):
                  viewsets_cls.as_view({"patch": "partial_update"})),
             path("<int:pk>/delete", viewsets_cls.as_view({"delete": "destroy"}))]
 
-
-vehicle_urls = urls_factory(VehicleViewSet)
-driver_urls = urls_factory(DriverViewSet)
-route_urls = urls_factory(RouteViewSet)
-
-urlpatterns = [path("vehicle/", include(vehicle_urls)),
-               path("driver/", include(driver_urls)),
-               path("route/", include(route_urls))]
+urlpatterns = [path("vehicle/", include(urls_factory(VehicleViewSet))),
+               path("driver/", include(urls_factory(DriverViewSet))),
+               path("route/", include(urls_factory(RouteViewSet)))]

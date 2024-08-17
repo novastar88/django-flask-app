@@ -1,1 +1,2 @@
-python -m gunicorn app:app --bind 0.0.0.0:8016
+#!/bin/sh
+python -m flask run

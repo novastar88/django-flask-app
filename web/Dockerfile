@@ -3,7 +3,7 @@
 ###########
 
 # pull official base image
-FROM python:2.7.18-slim-bullseye as builder
+FROM python:3.12.2-slim-bullseye as builder
 
 # set work directory
 WORKDIR /usr/src/app
@@ -16,10 +16,7 @@ ENV PYTHONUNBUFFERED 1
 RUN apt-get update && \
     apt-get install -y --no-install-recommends gcc
 
-# lint
 RUN pip install --upgrade pip
-# RUN pip install flake8==7.0.0
-RUN pip install gunicorn
 COPY . /usr/src/app/
 
 # install python dependencies
@@ -32,7 +29,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 #########
 
 # pull official base image
-FROM python:2.7.18-slim-bullseye
+FROM python:3.12.2-slim-bullseye
 
 # create directory for the app user
 RUN mkdir -p /home/app
@@ -49,14 +46,14 @@ WORKDIR $APP_HOME
 
 # install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends netcat
+
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
-RUN pip install gunicorn
 
 # copy entrypoint.sh
-COPY ./entrypoint.sh .
+COPY ./entrypoint.sh /usr/src/app/
 RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.sh
 RUN chmod +x /usr/src/app/entrypoint.sh
 
