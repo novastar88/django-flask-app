@@ -26,15 +26,22 @@ class Vehicle(models.Model):
     make = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
     plate_number = models.CharField(max_length=10, unique=True)
+    track_external_id = models.PositiveIntegerField(
+        unique=True, validators=[validators.MinValueValidator(1)])
+
     driver = models.ForeignKey(
         to=Driver, on_delete=models.PROTECT, null=True, blank=True)
     route = models.ForeignKey(
         to=Route, on_delete=models.PROTECT, null=True, blank=True)
-    occupied = models.BooleanField(
-        editable=False, help_text="Auto managed field")
-    functional = models.BooleanField()
+
+    functional = models.BooleanField(default=True)
     remaining_fuel = models.DecimalField(
         max_digits=5, decimal_places=2, help_text="Percentage of fuel remaining in tank")
+    speed_kmh = models.PositiveIntegerField(default=0)
+    distance_traveled_km = models.PositiveIntegerField(default=0)
+    current_weight_kg = models.PositiveIntegerField(default=0)
+
+    last_update = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return " | ".join([self.make, self.model, self.plate_number])

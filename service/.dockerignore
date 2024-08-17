@@ -1,0 +1,6 @@
+.venv
+.vscode
+*.pyc
+.env
+dockerfile.yml
+.dockerignore
