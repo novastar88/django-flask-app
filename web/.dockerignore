@@ -2,7 +2,6 @@ logs
 __pycache__
 .venv
 .vscode
-.env
 statics
 Dockerfile
 .dockerignore

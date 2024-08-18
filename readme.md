@@ -5,6 +5,7 @@
 
 ## Dev environment
 ### Local
+[Install docker](https://docs.docker.com/desktop/install/windows-install/) and run `docker compose -f docker-compose_dbs_only.yml` to setup databases.
 #### flask-service
 1. `cd service`
 2. Install virtual environment for Python 2.7.18
@@ -26,7 +27,7 @@
 
 ### Docker
 1. Install docker - [Guide](https://docs.docker.com/desktop/install/windows-install/)
-2. Check `docker-compose.yml` to see if any of the left-side ports are currently being used by any of your existing services to avoid internal connection problems
+2. Check `docker-compose.yml` to see if any of the left-side ports (host side ports) are currently being used by any of your existing services to avoid internal connection problems
 3. Check that `./.env` is set correctly (template file: `env_example_docker.txt`)
 4. Run `docker compose -f docker-compose.yml`
 
