@@ -166,3 +166,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "statics")
 
 REDIS_CACHE_HOST = env('REDIS_CACHE_HOST')
 REDIS_CACHE_PORT = env('REDIS_CACHE_PORT')
+
+FIXTURE_DIRS = [os.path.join(BASE_DIR, "fixtures")]
