@@ -36,7 +36,7 @@ At this stage the application is not production ready as nginx is not implemente
 
 # Endpoints
 ## flask-service
-1. GET `/vehicle_status/<int:vehicle_id>`
+1. GET `<root>/vehicle_status/<int:vehicle_id>`
 Get Current state of the vehicle of given id.
 
 ## django-web
