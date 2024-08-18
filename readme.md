@@ -24,6 +24,7 @@
 6. Create super user `python manage.py createsuperuser --noinput`
 7. Test: `python mange.py test`
 8. Run: `python manage.py runserver`
+9. Load example data `python manage.py loaddata fixtures_minimal`
 
 ### Docker
 1. Install docker - [Guide](https://docs.docker.com/desktop/install/windows-install/)

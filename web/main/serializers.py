@@ -15,9 +15,6 @@ class RouteSerializer(serializers.ModelSerializer):
 
 
 class VehicleSerializer(serializers.ModelSerializer):
-    driver = DriverSerializer(read_only=True)
-    route = RouteSerializer(read_only=True)
-
     class Meta:
         model = Vehicle
         fields = "__all__"
